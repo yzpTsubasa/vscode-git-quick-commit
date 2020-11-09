@@ -18,7 +18,7 @@ export default async (options: any): Promise<string> => {
   if (!workspacePath) {
     throw new Error("workspacePathが不明です。");
   }
-  vscode.extensions.all
+
   let config = vscode.workspace.getConfiguration('vscode-git-quick-commit-v2', vscode.Uri.parse(workspacePath));
   // 選択範囲テキスト取得
   let text = editor.document.getText(editor.selection);
