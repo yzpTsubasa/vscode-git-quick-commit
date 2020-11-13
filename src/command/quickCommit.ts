@@ -1,11 +1,11 @@
-import selectionCommentGitCommit from '../lib/selectionCommentGitCommit';
+import quickCommit from '../lib/quickCommit';
 import {ICommand} from './Command';
 
 
 
 const cmd: ICommand = function() {
   let options = {showDialog: false};
-  return selectionCommentGitCommit(options);
+  return quickCommit(options);
 };
 
 export default cmd;

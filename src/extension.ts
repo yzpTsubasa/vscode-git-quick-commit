@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import selectionCommentGitCommit from './command/selectionCommentGitCommit';
+import quickCommit from './command/quickCommit';
 import {ICommand} from './command/Command';
 
 
@@ -28,7 +28,7 @@ function register(context: vscode.ExtensionContext, command: ICommand, commandNa
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "vscode-git-quick-commit" is now active!');
-	register(context, selectionCommentGitCommit, 'selectionCommentGitCommit');
+	register(context, quickCommit, 'quickCommit');
 }
 
 

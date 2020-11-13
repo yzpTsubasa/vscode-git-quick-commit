@@ -28,6 +28,21 @@ export default async (options: any): Promise<string> => {
   if (!text && editor.selection.isEmpty && config.get('autoUseTrimLine')) {
     let line = editor.document.lineAt(editor.selection.start);
     text = line && line.text.trim();
+    let splitSeparator = config.get("splitSeparator", "");
+    if (splitSeparator) {
+      let joinSeparator = config.get("joinSeparator", "");
+      let splitUnitsLengthLimit = config.get("splitUnitsLengthLimit", 0);
+      let splitUnitsFilters: string[] = config.get("splitUnitsFilters", []);
+      text = text.split(splitSeparator)
+        .map(v => v.trim())
+        .filter(v => { 
+          return v 
+            && v.length > 0 
+            && (splitUnitsLengthLimit <= 0 || v.length <= splitUnitsLengthLimit) 
+            && !splitUnitsFilters.includes(v)
+        })
+        .join(joinSeparator);
+    }
   }
   if (!text) {
     throw new Error('コミットテキストを選択してください。');
@@ -58,11 +73,11 @@ export default async (options: any): Promise<string> => {
     .finally(() => {
       if (config.get("autoPush")) {
         exec(pushCmd, { cwd: workspacePath })
-        .then(() => {
-          if (!config.get("noTip")) {
-            vscode.window.showInformationMessage(`Push ${workspacePath}`);
-          }
-        })
+          .then(() => {
+            if (!config.get("noTip")) {
+              vscode.window.showInformationMessage(`Push ${workspacePath}`);
+            }
+          })
       }
     });
 };

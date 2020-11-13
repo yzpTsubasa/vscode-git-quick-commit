@@ -1,8 +1,8 @@
 {
-	"name": "vscode-git-quick-commit-v2",
-	"displayName": "Git Quick Commit v2",
-	"description": "Quick commit with select text",
-	"version": "0.0.8",
+	"name": "vscode-git-quick-commit",
+	"displayName": "vscode-git-quick-commit",
+	"description": "vscode-git-quick-commit",
+	"version": "0.0.9",
 	"license": "MIT",
 	"publisher": "TsubasaYeung",
 	"engines": {
@@ -22,22 +22,22 @@
 		"url": "https://github.com/yzpTsubasa/vscode-git-quick-commit.git"
 	},
 	"activationEvents": [
-		"onCommand:vscode-git-quick-commit.selectionCommentGitCommit"
+		"onCommand:vscode-git-quick-commit.quickCommit"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"menus": {
 			"editor/title": [
 				{
-					"command": "vscode-git-quick-commit.selectionCommentGitCommit",
+					"command": "vscode-git-quick-commit.quickCommit",
 					"group": "navigation@1"
 				}
 			]
 		},
 		"commands": [
 			{
-				"command": "vscode-git-quick-commit.selectionCommentGitCommit",
-				"title": "Selection Comment Git Commit: Quick Commit",
+				"command": "vscode-git-quick-commit.quickCommit",
+				"title": "Quick commit",
 				"icon": {
 					"light": "images/commit@light.svg",
 					"dark": "images/commit@dark.svg"
@@ -67,6 +67,26 @@
 						"type": "boolean",
 						"default": false,
 						"description": "Don't show tip"
+					},
+					"vscode-git-quick-commit-v2.splitSeparator": {
+						"type": "string",
+						"default": "",
+						"description": "[autoUseTrimLine] Separator for spit commit text"
+					},
+					"vscode-git-quick-commit-v2.joinSeparator": {
+						"type": "string",
+						"default": "",
+						"description": "[autoUseTrimLine] Separator for join commit text"
+					},
+					"vscode-git-quick-commit-v2.splitUnitsLengthLimit": {
+						"type": "integer",
+						"default": 0,
+						"description": "[autoUseTrimLine] Length limit of split units(0 means limit)"
+					},
+					"vscode-git-quick-commit-v2.splitUnitsFilters": {
+						"type": "array",
+						"default": [],
+						"description": "[autoUseTrimLine] Filters for split unit"
 					}
 				}
 			}

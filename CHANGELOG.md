@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.9 (2020-11-14)
+
+- Add new features for autoUseTrimLine
+
 ## 0.0.8 (2020-11-10)
 
 - Commit icon will always show
