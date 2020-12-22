@@ -2,7 +2,7 @@
 	"name": "vscode-git-quick-commit",
 	"displayName": "vscode-git-quick-commit",
 	"description": "vscode-git-quick-commit",
-	"version": "0.0.9",
+	"version": "0.0.10",
 	"license": "MIT",
 	"publisher": "TsubasaYeung",
 	"engines": {

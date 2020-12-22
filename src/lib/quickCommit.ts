@@ -21,32 +21,37 @@ export default async (options: any): Promise<string> => {
 
   let config = vscode.workspace.getConfiguration('vscode-git-quick-commit-v2', vscode.Uri.parse(workspacePath));
   // 選択範囲テキスト取得
-  let text = editor.document.getText(editor.selection);
+  let text = editor.selections.map(selection => editor && editor.document.getText(selection)).join("\n").trim();
   if (!text) {
     text = config.get('defaultCommitMsg', '');
   }
   if (!text && editor.selection.isEmpty && config.get('autoUseTrimLine')) {
-    let line = editor.document.lineAt(editor.selection.start);
-    text = line && line.text.trim();
-    let splitSeparator = config.get("splitSeparator", "");
-    if (splitSeparator) {
-      let joinSeparator = config.get("joinSeparator", "");
-      let splitUnitsLengthLimit = config.get("splitUnitsLengthLimit", 0);
-      let splitUnitsFilters: string[] = config.get("splitUnitsFilters", []);
-      text = text.split(splitSeparator)
-        .map(v => v.trim())
-        .filter(v => { 
-          return v 
-            && v.length > 0 
-            && (splitUnitsLengthLimit <= 0 || v.length <= splitUnitsLengthLimit) 
-            && !splitUnitsFilters.includes(v)
-        })
-        .join(joinSeparator);
-    }
+    text = editor.selections.map(selection => {
+      let tmp = "";
+      let line = editor && editor.document.lineAt(selection.start);
+      tmp = line && line.text.trim() || "";
+      let splitSeparator = config.get("splitSeparator", "");
+      if (splitSeparator) {
+        let joinSeparator = config.get("joinSeparator", "");
+        let splitUnitsLengthLimit = config.get("splitUnitsLengthLimit", 0);
+        let splitUnitsFilters: string[] = config.get("splitUnitsFilters", []);
+        tmp = tmp.split(splitSeparator)
+          .map(v => v.trim())
+          .filter(v => { 
+            return v 
+              && v.length > 0 
+              && (splitUnitsLengthLimit <= 0 || v.length <= splitUnitsLengthLimit) 
+              && !splitUnitsFilters.includes(v)
+          })
+          .join(joinSeparator);
+      }
+      return tmp;
+    }).join("\n").trim();
   }
   if (!text) {
     throw new Error('コミットテキストを選択してください。');
   }
+  
   let input: string | undefined = text;
 
   if (isShowDialog) {
@@ -61,8 +66,11 @@ export default async (options: any): Promise<string> => {
 
   vscode.workspace.saveAll();
 
-
-  let commitCmd = `git add . && git commit -m"${input}"`;
+  let commitCmd = `git add . && git commit`;
+  let inputs = input.split("\n")
+  for (let v of inputs) {
+    commitCmd += ` -m "${v}"`;
+  }
   let pushCmd = `git push`;
   return exec(commitCmd, { cwd: workspacePath })
     .then(() => {

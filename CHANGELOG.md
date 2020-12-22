@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.10 (2020-12-22)
+
+- Support multi-lines & multi-selections
+
 ## 0.0.9 (2020-11-14)
 
 - Add new features for autoUseTrimLine
